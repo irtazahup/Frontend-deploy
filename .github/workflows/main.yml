@@ -1,34 +1,20 @@
-name: Frontend CI/CD
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run linter
-        run: npm run lint || true
-
-      - name: Build the project
-        run: npm run build || echo "No build script"
-
-      - name: Run tests
-        run: npm test || echo "No tests configured"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./src
